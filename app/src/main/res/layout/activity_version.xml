@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activity.VersionActivity">
+
+    <include
+        layout="@layout/actionBar"
+        android:id="@+id/header"/>
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/login_icon"
+        android:paddingTop="20dp"
+        android:paddingBottom="5dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/header"/>
+
+    <TextView
+        android:id="@+id/app_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="16sp"
+        android:background="@color/white"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/logo"/>
+
+    <TextView
+        android:id="@+id/currentVersionName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="当前版本：V1.0.111"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_marginTop="3dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/app_name"/>
+
+    <TextView
+        android:id="@+id/check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="检查更新"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/click_register"
+        app:layout_constraintTop_toBottomOf="@+id/currentVersionName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/check"/>
+
+    <TextView
+        android:id="@+id/newVersionName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="最新版本：V1.0.112"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_marginTop="3dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/line"
+        android:visibility="gone"/>
+</android.support.constraint.ConstraintLayout>
