@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,8 +38,7 @@ public class LoginActivity extends BaseActivity {
     private CheckBox checkBox_rememberPsd;
     private TextView textView_warn;
     private Button btn_load;
-    private TextView register;
-    private ImageView imageView_eye;
+    private CheckBox checkBox_eye;
 
     private boolean isChecked = false;
 
@@ -173,17 +173,21 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        /*register = (TextView) findViewById(R.id.register);
-        register.setOnClickListener(new View.OnClickListener() {
+        checkBox_eye = (CheckBox) findViewById(R.id.eye);
+        checkBox_eye.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    editText_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD | InputType.TYPE_CLASS_TEXT);
+                }else{
+                    editText_password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT);
+                }
+                //设置光标在最后显示
+                editText_password.setSelection(editText_password.getText().toString().trim().length());
             }
-        });*/
+        });
 
-        imageView_eye = (ImageView)findViewById(R.id.eye);
-        imageView_eye.setOnClickListener(new View.OnClickListener() {
+        /*checkBox_eye.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!isChecked){
@@ -209,7 +213,7 @@ public class LoginActivity extends BaseActivity {
                     }
                 });
             }
-        });
+        });*/
 
         boolean isRemember = pref.getBoolean("remember_password", false);
         if (isRemember) {

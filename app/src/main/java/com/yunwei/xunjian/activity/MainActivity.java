@@ -11,6 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.yunwei.xunjian.R;
+import com.yunwei.xunjian.fragment.FragmentTabGtasks;
 import com.yunwei.xunjian.fragment.FragmentTabMine;
 import com.yunwei.xunjian.util.BDLocationUtils;
 import com.yunwei.xunjian.util.StatusBarUtil;
@@ -25,6 +26,7 @@ public class MainActivity extends BaseActivity {
     private FragmentManager fm;
     private FragmentTransaction ft;
     private FragmentTabMine fragmentTabMine;
+    private FragmentTabGtasks fragmentTabGtasks;
 
     BDLocationUtils bdLocationUtils;
 
@@ -47,22 +49,20 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch(checkedId){
-                    case R.id.rb_xiansun:
+                    case R.id.rb_gtasks:
                         displayFragment(0);
                         break;
                     case R.id.rb_mine:
                         displayFragment(1);
                         break;
-                    case R.id.rb_add:
+                    /*case R.id.rb_add:
                         displayFragment(2);
-                        break;
+                        break;*/
                     default:
                         break;
                 }
             }
         });
-
-
 
         displayFragment(0);
 
@@ -133,7 +133,12 @@ public class MainActivity extends BaseActivity {
         hideFragment(ft);
         switch(i){
             case 0:
-
+                if(fragmentTabGtasks == null){
+                    fragmentTabGtasks = new FragmentTabGtasks();
+                    ft.add(R.id.fragment_content, fragmentTabGtasks, "fragmentTab1");
+                }else{
+                    ft.show(fragmentTabGtasks);
+                }
                 break;
             case 1:
                 if(fragmentTabMine == null){
@@ -154,7 +159,9 @@ public class MainActivity extends BaseActivity {
 
     private void hideFragment(FragmentTransaction ft){
         //如果fragment不为空，就先隐藏起来
-
+        if(fragmentTabGtasks != null){
+            ft.hide(fragmentTabGtasks);
+        }
         if(fragmentTabMine != null){
             ft.hide(fragmentTabMine);
         }

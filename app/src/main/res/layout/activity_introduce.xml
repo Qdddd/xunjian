@@ -7,7 +7,7 @@
     android:background="@color/white"
     tools:context=".activity.IntroduceActivity">
 
-    <include layout="@layout/actionBar"
+    <include layout="@layout/actionbar"
         android:id="@+id/header"/>
 
     <ScrollView

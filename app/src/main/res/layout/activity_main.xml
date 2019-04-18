@@ -27,21 +27,21 @@
                 android:gravity="center"
                 android:textColor="@color/color_select"
                 android:checked="true"
-                android:drawableTop="@drawable/main_tab_rb_xiansun" />
+                android:drawableTop="@drawable/main_tab_rb_gtasks" />
+
             <RadioButton
                 android:id="@+id/rb_finished"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_gravity="center_vertical"
-                android:padding="5dp"
+                android:layout_weight="1"
                 android:button="@null"
-                android:text="已办工单"
-                android:textSize="14sp"
+                android:drawableTop="@drawable/main_tab_rb_finished"
                 android:gravity="center"
+                android:padding="5dp"
+                android:text="已办工单"
                 android:textColor="@color/color_select"
-                android:drawableTop="@drawable/main_tab_rb_add"
-                />
+                android:textSize="14sp" />
             <RadioButton
                android:id="@+id/rb_book"
                android:layout_width="wrap_content"
@@ -54,7 +54,7 @@
                android:textSize="14sp"
                android:gravity="center"
                android:textColor="@color/color_select"
-               android:drawableTop="@drawable/main_tab_rb_mine" />
+               android:drawableTop="@drawable/main_tab_rb_book" />
             <RadioButton
                 android:id="@+id/rb_mine"
                 android:layout_width="wrap_content"

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#eeeeee">
 
-    <include layout="@layout/actionBar"
+    <include layout="@layout/actionbar"
         android:id="@+id/header"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
