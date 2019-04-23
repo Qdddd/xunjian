@@ -142,11 +142,14 @@ public class LoginActivity extends BaseActivity {
                                 String msge = jsonData.getString("msg");
                                 if (msge.equals("处理成功")) {
 
-                                    String userName = inputUser;
+                                    String phone = inputUser;
                                     //String nickName = jsonData.getString("nickname");
 
+                                    jsonData=new JSONObject(jsonData.get("extend").toString());
+                                    String userName=jsonData.get("ORGANIZ_CODE").toString();
                                     Bundle bundle = new Bundle();
                                     bundle.putString("userName", userName);
+                                    bundle.putString("phone", phone);
                                     //bundle.putString("nowNickName", nickName);
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     intent.putExtras(bundle);

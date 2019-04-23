@@ -235,9 +235,9 @@ public class FragmentTabFinished extends Fragment {
                 workNum=jsonObject.getString("work_LIST_NUM");
                 workName = jsonObject.getString("work_ORDER_NAME");
                 line = jsonObject.getString("line");
-                sendOrderPerson=jsonObject.getString("send_ORDER_PERSON");
+                sendOrderPerson=jsonObject.getString("work_List_SEND_PERSION");
                 sendOrderTime=Tools.stampToDate(Long.valueOf(jsonObject.getString("send_ORDER_TIME"))/1000);
-                handler=jsonObject.getString("handler");
+                handler=jsonObject.getString("work_List_HANDLER");
                 accomplishTime=Tools.stampToDate(Long.valueOf(jsonObject.getString("accomplish_TIME"))/1000);
 
                 Map<String, String> map = new HashMap<>();
