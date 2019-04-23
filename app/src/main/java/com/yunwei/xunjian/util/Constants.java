@@ -43,7 +43,8 @@ public class Constants {
     /*获取待办工单*/
     public static final String GTASKS = BASIC_URL + "/";
 
-
+    /*获取待办工单*/
+    public static final String FINISHED_LIST =BASIC_URL + "/workList/getAllWorkListByHandler";
     /*我的*/
     public static final String MY_INFO = BASIC_URL + "/realUser/getRealUserInfo";
 
