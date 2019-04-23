@@ -47,6 +47,7 @@
         <activity android:name=".activity.VersionActivity" />
         <activity android:name=".activity.ContactUserActivity"/>
         <activity android:name=".activity.DepartmentActivity"/>
+        <activity android:name=".activity.FinishedWorkDetailActivity"></activity>
     </application>
 
 </manifest>

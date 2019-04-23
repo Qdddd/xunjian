@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.yunwei.xunjian.R;
 import com.yunwei.xunjian.fragment.FragmentTabBook;
+import com.yunwei.xunjian.fragment.FragmentTabFinished;
 import com.yunwei.xunjian.fragment.FragmentTabGtasks;
 import com.yunwei.xunjian.fragment.FragmentTabMine;
 import com.yunwei.xunjian.util.BDLocationUtils;
@@ -29,6 +30,7 @@ public class MainActivity extends BaseActivity {
     private FragmentTabMine fragmentTabMine;
     private FragmentTabGtasks fragmentTabGtasks;
     private FragmentTabBook fragmentTabBook;
+    private FragmentTabFinished fragmentTabFinished;
     BDLocationUtils bdLocationUtils;
 
     @Override
@@ -59,6 +61,10 @@ public class MainActivity extends BaseActivity {
                     case R.id.rb_book:
                         displayFragment(2);
                         break;
+                    case R.id.rb_finished:
+                        displayFragment(3);
+                        break;
+
                     /*case R.id.rb_add:
                         displayFragment(2);
                         break;*/
@@ -160,6 +166,14 @@ public class MainActivity extends BaseActivity {
                     ft.show(fragmentTabBook);
                 }
                 break;
+            case 3:
+                if(fragmentTabFinished == null){
+                    fragmentTabFinished = new FragmentTabFinished();
+                    ft.add(R.id.fragment_content,fragmentTabFinished,"已办工单");
+                }else{
+                    ft.show(fragmentTabFinished);
+                }
+                break;
             default:
                 break;
         }
@@ -174,6 +188,13 @@ public class MainActivity extends BaseActivity {
         if(fragmentTabMine != null){
             ft.hide(fragmentTabMine);
         }
+        if(fragmentTabBook != null){
+            ft.hide(fragmentTabBook);
+        }
+        if(fragmentTabFinished != null){
+            ft.hide(fragmentTabFinished);
+        }
+
 
     }
 

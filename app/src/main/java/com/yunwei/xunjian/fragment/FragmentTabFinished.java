@@ -1,5 +1,6 @@
 package com.yunwei.xunjian.fragment;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,10 +18,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.yunwei.xunjian.R;
+import com.yunwei.xunjian.activity.FinishedWorkDetailActivity;
 import com.yunwei.xunjian.activity.MainActivity;
-import com.yunwei.xunjian.adapter.GtasksAdapter;
+import com.yunwei.xunjian.adapter.FinishedAdapter;
 import com.yunwei.xunjian.util.HttpUtil;
 import com.yunwei.xunjian.util.StatusBarUtil;
+import com.yunwei.xunjian.util.Tools;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,7 +37,7 @@ import java.util.Map;
 import okhttp3.Call;
 import okhttp3.Response;
 
-import static com.yunwei.xunjian.util.Constants.GTASKS;
+import static com.yunwei.xunjian.util.Constants.FINISHED_LIST;
 import static com.yunwei.xunjian.util.Constants.NULL_LISTVIEW;
 import static com.yunwei.xunjian.util.Constants.UPDATE_LISTVIEW;
 
@@ -56,9 +59,9 @@ public class FragmentTabFinished extends Fragment {
             switch (msg.what) {
                 case UPDATE_LISTVIEW:
                     swipeRefresh.setVisibility(View.VISIBLE);
-                 //   textView_null_list.setVisibility(View.GONE);
-                    GtasksAdapter gtasksAdapter = new GtasksAdapter(getActivity(), R.layout.worklist_item, list);
-                    listView.setAdapter(gtasksAdapter);
+                   //textView_null_list.setVisibility(View.GONE);
+                    FinishedAdapter finishedAdapter = new FinishedAdapter(getActivity(), R.layout.finished_item, list);
+                    listView.setAdapter(finishedAdapter);
                     break;
                 case NULL_LISTVIEW:
                     swipeRefresh.setVisibility(View.GONE);
@@ -82,16 +85,27 @@ public class FragmentTabFinished extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tab_gtasks, container,false);
-        listView = (ListView)view.findViewById(R.id.gtasksList);
+        View view = inflater.inflate(R.layout.fragment_tab_finished, container,false);
+        TextView textView_title = view.findViewById(R.id.title);
+        textView_title.setText("已办工单");
+        listView = (ListView)view.findViewById(R.id.finishedList);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                /*Intent intent = new Intent(getActivity(), );
-                intent.putExtra("type", "old");
-                intent.putExtra("userName", userName);
-                intent.putExtra("areaCode", list.get(position).get("areaCode"));
-                startActivity(intent);*/
+                Intent intent = new Intent(getActivity(), FinishedWorkDetailActivity.class);
+
+                Bundle bundle=new Bundle();
+                bundle.putCharSequence("userName",MainActivity.userName);
+                bundle.putCharSequence("workNum", list.get(position).get("workNum"));
+                bundle.putCharSequence("workName", list.get(position).get("workName"));
+                bundle.putCharSequence("line", list.get(position).get("line"));
+                bundle.putCharSequence("sendOrderPerson", list.get(position).get("sendOrderPerson"));
+                bundle.putCharSequence("sendOrderTime", list.get(position).get("sendOrderTime"));
+                bundle.putCharSequence("handler", list.get(position).get("handler"));
+                bundle.putCharSequence("accomplishTime", list.get(position).get("accomplishTime"));
+
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
         swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
@@ -163,19 +177,19 @@ public class FragmentTabFinished extends Fragment {
 
     private void initView() {
 
-        String URL = GTASKS + "?name=" + MainActivity.userName;
+        String URL = FINISHED_LIST + "?name=" + MainActivity.userName;
         HttpUtil.sendOkHttpRequest(URL, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData = response.body().string();
-
+                Log.i("###:",responseData+"##############");
                 if(!responseData.equals("[]")) {
                     parseJSONWithJSONObject(responseData);
-
                     Message message = new Message();
                     message.what = UPDATE_LISTVIEW;
                     handler.sendMessage(message);
                 }else{
+                    Log.i("responseData","==========="+responseData+"================");
                     Message message = new Message();
                     message.what = NULL_LISTVIEW;
                     handler.sendMessage(message);
@@ -205,24 +219,38 @@ public class FragmentTabFinished extends Fragment {
 
     private void parseJSONWithJSONObject(String jsonData) {
         list.clear();
-
         try {
-            String workListNo, gtasks, lineName;
-            JSONArray jsonArray = new JSONArray(jsonData);
-            Log.d("workList", "Length of jason array is : " + jsonArray.length());
+            String workNum, workName, line,sendOrderPerson,sendOrderTime,handler,accomplishTime;
+            JSONObject jsonOb= new JSONObject(jsonData);
+            Log.i("###:",jsonOb.get("extend").toString()+"##############");
+            Log.d("workList", "Length of jason array is : " + jsonOb.length());
+            String a=  jsonOb.get("extend").toString();
+            if (!a.equals("{}")) {
+                jsonOb = new JSONObject(a);
+                a = jsonOb.get("workList").toString();
+            }
+            JSONArray jsonArray = new JSONArray(a);
             for (int i=0; i<jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                workListNo  = jsonObject.getString("workListNo");
-                gtasks = jsonObject.getString("gtasks");
-                lineName = jsonObject.getString("lineName");
+                JSONObject jsonObject=new JSONObject(jsonArray.get(i).toString());
+                workNum=jsonObject.getString("work_LIST_NUM");
+                workName = jsonObject.getString("work_ORDER_NAME");
+                line = jsonObject.getString("line");
+                sendOrderPerson=jsonObject.getString("send_ORDER_PERSON");
+                sendOrderTime=Tools.stampToDate(Long.valueOf(jsonObject.getString("send_ORDER_TIME"))/1000);
+                handler=jsonObject.getString("handler");
+                accomplishTime=Tools.stampToDate(Long.valueOf(jsonObject.getString("accomplish_TIME"))/1000);
 
                 Map<String, String> map = new HashMap<>();
-                map.put("workListNo", workListNo);
-                map.put("gtasks", gtasks);
-                map.put("lineName", lineName);
+                map.put("workNum", workNum);
+                map.put("workName", workName);
+                map.put("line", line);
+                map.put("sendOrderPerson",sendOrderPerson);
+                map.put("sendOrderTime",sendOrderTime);
+                map.put("handler",handler);
+                map.put("accomplishTime",accomplishTime);
 
                 list.add(map);
-            }
+                }
         } catch (Exception e) {
             e.printStackTrace();
         }
