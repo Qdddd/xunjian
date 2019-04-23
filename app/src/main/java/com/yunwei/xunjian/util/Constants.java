@@ -30,13 +30,13 @@ public class Constants {
     public static double LONGITUDE = 0;//经度
     public static double LATITUDE = 0;//纬度
 
-    public static final String BASIC_URL = "http://106.12.204.182:8080/hb2";
+    public static final String BASIC_URL = "http://192.168.1.105:8080/yunwei2/app";
 //    public static final String BASIC_URL = "http://172.16.18.253:8080";
 //    public static final String BASIC_URL = "http://192.168.14.249:8080";
 //    public static final String BASIC_URL = "http://61.163.34.143:8081";
 
     /*登陆*/
-    public static final String LOGIN_URL = BASIC_URL + "/login/xyUser";
+    public static final String LOGIN_URL = BASIC_URL + "/user/checkLogin";
 
 
     /*待办工单*/
