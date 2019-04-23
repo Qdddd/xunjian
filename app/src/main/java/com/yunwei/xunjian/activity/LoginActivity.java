@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yunwei.xunjian.R;
@@ -140,19 +139,27 @@ public class LoginActivity extends BaseActivity {
                                 editor.apply();
 
                                 JSONObject jsonData = new JSONObject(responseData);
-                                String userName = jsonData.getString("username");
-                                //String nickName = jsonData.getString("nickname");
+                                String msge = jsonData.getString("msg");
+                                if (msge.equals("处理成功")) {
 
-                                Bundle bundle = new Bundle();
-                                bundle.putString("userName", userName);
-                                //bundle.putString("nowNickName", nickName);
-                                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                                intent.putExtras(bundle);
-                                startActivity(intent);
+                                    String userName = inputUser;
+                                    //String nickName = jsonData.getString("nickname");
 
-                                Message msg = new Message();
-                                msg.what = USER_NAME_OK;
-                                handler.sendMessage(msg);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("userName", userName);
+                                    //bundle.putString("nowNickName", nickName);
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
+
+                                    Message msg = new Message();
+                                    msg.what = USER_NAME_OK;
+                                    handler.sendMessage(msg);
+                                }else {
+                                    Message msg = new Message();
+                                    msg.what = USER_NAME_WRONG;
+                                    handler.sendMessage(msg);
+                                }
                             }
                         }catch (JSONException e) {
                             e.printStackTrace();
