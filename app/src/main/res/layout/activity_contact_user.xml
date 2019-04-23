@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".fragment.FragmentTabBook">
+
+    <RelativeLayout
+        android:id="@+id/mctitle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/lan">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="8dp"
+            android:src="@mipmap/return1"
+            android:paddingStart="15dp"
+            />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:text="通讯录"
+            android:textSize="24sp"
+            android:padding="8dp"
+            />
+
+        <TextView
+            android:id="@+id/end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text=""
+            android:padding="10dp"
+            android:paddingStart="20dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/top"
+        app:layout_constraintTop_toBottomOf="@+id/mctitle"
+        >
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@color/darkGray"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/top">
+        <TextView
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/item"
+            android:text="人员"
+            android:drawablePadding="10dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
+        <ListView
+            android:id="@+id/listitem"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/top"/>
+
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

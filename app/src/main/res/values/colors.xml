@@ -11,4 +11,7 @@
     <color name="lan">#52b7ef</color>
     <color name="gray">#e2e2e2</color>
     <color name="darkGray">#dcdcdc</color>
+    <color name="text_nodata">#a6a6a6</color>
+    <color name="gray_line">#cccccc</color>
+    <color name="theme_color">#52b7ef</color>
 </resources>

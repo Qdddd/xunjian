@@ -11,6 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.yunwei.xunjian.R;
+import com.yunwei.xunjian.fragment.FragmentTabBook;
 import com.yunwei.xunjian.fragment.FragmentTabGtasks;
 import com.yunwei.xunjian.fragment.FragmentTabMine;
 import com.yunwei.xunjian.util.BDLocationUtils;
@@ -27,7 +28,7 @@ public class MainActivity extends BaseActivity {
     private FragmentTransaction ft;
     private FragmentTabMine fragmentTabMine;
     private FragmentTabGtasks fragmentTabGtasks;
-
+    private FragmentTabBook fragmentTabBook;
     BDLocationUtils bdLocationUtils;
 
     @Override
@@ -54,6 +55,9 @@ public class MainActivity extends BaseActivity {
                         break;
                     case R.id.rb_mine:
                         displayFragment(1);
+                        break;
+                    case R.id.rb_book:
+                        displayFragment(2);
                         break;
                     /*case R.id.rb_add:
                         displayFragment(2);
@@ -149,7 +153,12 @@ public class MainActivity extends BaseActivity {
                 }
                 break;
             case 2:
-
+                if(fragmentTabBook == null){
+                    fragmentTabBook = new FragmentTabBook();
+                    ft.add(R.id.fragment_content,fragmentTabBook,"通讯录");
+                }else{
+                    ft.show(fragmentTabBook);
+                }
                 break;
             default:
                 break;
