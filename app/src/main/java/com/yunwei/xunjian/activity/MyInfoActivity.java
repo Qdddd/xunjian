@@ -51,6 +51,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         textView_title.setText("个人信息");
 
         imageView_back = (ImageView)findViewById(R.id.back);
+        imageView_back.setImageResource(R.mipmap.back);
         imageView_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +81,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initView(){
-        String URL = MY_INFO + "?userName=" + userName;
+        String URL = MY_INFO + "?organizCode=" + userName;
         HttpUtil.sendOkHttpRequest(URL, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -100,17 +101,22 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
 
                 try {
                     JSONObject jsonObject = new JSONObject(responseData);
-
-                    final String name = jsonObject.getString("nickname");
-                    final String idcNumber = jsonObject.getString("idcnumber");
-                    final String phone = jsonObject.getString("phone");
+                    String a=jsonObject.get("extend").toString();
+                    jsonObject=new JSONObject(a);
+                    a=jsonObject.get("userInfo").toString();
+                    jsonObject=new JSONObject(a);
+                    final String nickName = jsonObject.getString("name");
+                    //final String idcNumber = jsonObject.getString("idcnumber");
+                    final String pwd=jsonObject.getString("password");
+                    final String phone=jsonObject.getString("user_NAME");
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            textView_name.setText(name);
-                            textView_idc.setText(idcNumber);
+                            textView_name.setText(nickName);
+                            // textView_idc.setText(idcNumber);
                             textView_telephone.setText(phone);
+                            textView_password.setText(pwd);
                         }
                     });
                 } catch (JSONException e) {
@@ -123,9 +129,9 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch(v.getId()){
-            case R.id.idc_edit:
-                showDialog(MyInfoActivity.this, "身份证号");
-                break;
+//            case R.id.idc_edit:
+//                showDialog(MyInfoActivity.this, "身份证号");
+//                break;
             case R.id.phone_edit:
                 showDialog(MyInfoActivity.this, "手机号码");
                 break;
