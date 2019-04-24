@@ -46,7 +46,7 @@ public class Constants {
     /*获取待办工单*/
     public static final String FINISHED_LIST =BASIC_URL + "/workList/getAllWorkListByHandler";
     /*我的*/
-    public static final String MY_INFO = BASIC_URL + "/realUser/getRealUserInfo";
+    public static final String MY_INFO = BASIC_URL + "/user/getUserInfo";
 
     /*修改身份证号和电话号码*/
     public static final String MODIFY_IDC_AND_PHONE = BASIC_URL + "/realUser/changeIdcNoAndPhone";
