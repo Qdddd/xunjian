@@ -75,7 +75,6 @@ public class LoginActivity extends BaseActivity {
         StatusBarUtil.setStatusBarMode(this, true, R.color.white);
 
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-
         editText_username = (EditText) findViewById(R.id.username);
         editText_password = (EditText) findViewById(R.id.password);
         editText_password.addTextChangedListener(new TextWatcher() {
