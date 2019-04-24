@@ -8,7 +8,18 @@
         <item name="colorAccent">@color/lan</item>
 
         <!-- 避免控件会顶到状态栏上 -->
-        <item name="android:fitsSystemWindows">true</item>
+        <!--<item name="android:fitsSystemWindows">true</item>-->
     </style>
 
+    <style name="MyAppTheme" parent="AppTheme">
+        <!--<item name="android:windowBackground">@mipmap/interface_icon</item>-->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="NoTitle" parent="MyAppTheme">
+        <item name="colorPrimaryDark">@color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
 </resources>
