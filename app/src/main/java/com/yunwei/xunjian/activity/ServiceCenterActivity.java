@@ -82,6 +82,7 @@ public class ServiceCenterActivity extends BaseActivity {
         textView_title.setText("意见反馈");
 
         imageView_back = (ImageView)findViewById(R.id.back);
+        imageView_back.setImageResource(R.mipmap.back);
         imageView_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

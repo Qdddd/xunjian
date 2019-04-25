@@ -39,6 +39,7 @@ public class VersionActivity extends AppCompatActivity {
         textView_title.setText("当前版本");
 
         textView_check = (TextView)findViewById(R.id.check);
+        imageView_back.setImageResource(R.mipmap.back);
         textView_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

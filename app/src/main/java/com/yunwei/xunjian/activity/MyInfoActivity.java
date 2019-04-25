@@ -32,7 +32,7 @@ import static com.yunwei.xunjian.util.Constants.MY_INFO;
 public class MyInfoActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView textView_title;
-    private TextView textView_name, textView_password;
+    private TextView textView_name, textView_password,textView_dept,textView_post;
     private TextView textView_idc, textView_telephone;
     private ImageView imageView_back;
     private ImageView imageView_edit_name, imageView_edit_idc, imageView_edit_phone, imageView_edit_password;
@@ -61,6 +61,8 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         });
 
         textView_name = (TextView)findViewById(R.id.name);
+        textView_dept = (TextView)findViewById(R.id.dept);
+        textView_post = (TextView)findViewById(R.id.post);
         textView_idc = (TextView) findViewById(R.id.idc);
         textView_telephone = (TextView) findViewById(R.id.phone);
         textView_password = (TextView)findViewById(R.id.password);
@@ -110,6 +112,8 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                     //final String idcNumber = jsonObject.getString("idcnumber");
                     final String pwd=jsonObject.getString("password");
                     final String phone=jsonObject.getString("user_NAME");
+                    final String dept=jsonObject.getString("organiz");
+                    final String post=jsonObject.getString("post");
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -118,6 +122,8 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                             // textView_idc.setText(idcNumber);
                             textView_telephone.setText(phone);
                             textView_password.setText(pwd);
+                            textView_dept.setText(dept);
+                            textView_post.setText(post);
                         }
                     });
                 } catch (JSONException e) {

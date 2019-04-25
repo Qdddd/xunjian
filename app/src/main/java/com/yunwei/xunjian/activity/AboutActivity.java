@@ -24,6 +24,7 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
         StatusBarUtil.setStatusBarMode(this, false, R.color.lan);
 
         imageView_back = (ImageView)findViewById(R.id.back);
+        imageView_back.setImageResource(R.mipmap.back);
         imageView_back.setOnClickListener(this);
 
         textView_title = (TextView)findViewById(R.id.title);

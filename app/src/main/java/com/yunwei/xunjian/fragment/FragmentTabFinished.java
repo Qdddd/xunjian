@@ -109,7 +109,8 @@ public class FragmentTabFinished extends Fragment {
             }
         });
         swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
-        swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefresh.setColorSchemeResources(R.color.lan);
+
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

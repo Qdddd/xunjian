@@ -72,6 +72,7 @@ public class HistoryFeedbackActivity extends BaseActivity {
         textView_title = (TextView)findViewById(R.id.title);
         textView_title.setText("历史反馈");
         imageView_back = (ImageView)findViewById(R.id.back);
+        imageView_back.setImageResource(R.mipmap.back);
         imageView_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

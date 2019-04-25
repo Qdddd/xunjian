@@ -20,6 +20,7 @@ public class IntroduceActivity extends BaseActivity {
         StatusBarUtil.setStatusBarMode(this, false, R.color.lan);
 
         imageView_back = (ImageView)findViewById(R.id.back);
+        imageView_back.setImageResource(R.mipmap.back);
         imageView_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
