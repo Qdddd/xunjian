@@ -2,12 +2,12 @@ package com.yunwei.xunjian.util;
 
 public class Constants {
 
-/*    public static final String UNIT_CODE_ZZDY = "ZZDY11000000";
-    public static final String UNIT_CODE_XIXIAN = "JGGW1100000000";
-    public static final String UNIT_CODE_XINXIAN = "JGXX1100000000";
-    public static final String UNIT_CODE_LUOSHAN = "JGLS1100000000";
-    public static final String UNIT_CODE_SHANGCHENG = "JGSC1100000000";
-*/
+    /*    public static final String UNIT_CODE_ZZDY = "ZZDY11000000";
+        public static final String UNIT_CODE_XIXIAN = "JGGW1100000000";
+        public static final String UNIT_CODE_XINXIAN = "JGXX1100000000";
+        public static final String UNIT_CODE_LUOSHAN = "JGLS1100000000";
+        public static final String UNIT_CODE_SHANGCHENG = "JGSC1100000000";
+    */
     public static final int NULL_LISTVIEW = 0;
     public static final int UPDATE_LISTVIEW = 1;
     public static final int SEARCH_TRANSFORMER_SUCCESS = 2;
@@ -41,7 +41,7 @@ public class Constants {
 
     /*待办工单*/
     /*获取待办工单*/
-    public static final String GTASKS = BASIC_URL + "/";
+    public static final String GTASKS = BASIC_URL + "/workList/getAllBacklogWorkListByHandler";
 
     /*获取待办工单*/
     public static final String FINISHED_LIST =BASIC_URL + "/workList/getAllWorkListByHandler";

@@ -1,8 +1,10 @@
 package com.yunwei.xunjian.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yunwei.xunjian.R;
 import com.yunwei.xunjian.util.ItentButtonUtil;
@@ -28,6 +30,9 @@ private TextView finshed;
         finshed=findViewById(R.id.finished);
         IntentNull(MContentActivity.this,unfinshed,WorkDetailActivity.class);
         IntentNull(MContentActivity.this,finshed,WorkDetailActivity.class);
+        Intent intent=getIntent();
+        String data = intent.getStringExtra("workListNo");
+        Toast.makeText(MContentActivity.this,""+data,Toast.LENGTH_SHORT).show();
 
 
 

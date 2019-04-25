@@ -46,12 +46,32 @@
         <activity android:name=".activity.FinishedWorkDetailActivity"></activity>
         <activity android:name=".activity.LaunchActivity"
             android:theme="@style/NoTitle">
-            <intent-filter>
+           <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.WorkDetailActivity" >
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+        <activity android:name=".activity.MContentActivity" ></activity>
+        <activity
+            android:name=".activity.TaskDispose"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustNothing"> <!-- 防止手机上打开输入框时出现页面布局错误 -->
+        </activity>
+        <activity
+            android:name=".activity.SwitchActivity"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity android:name=".activity.TransformerActivity"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustNothing"></activity>
     </application>
 
 </manifest>

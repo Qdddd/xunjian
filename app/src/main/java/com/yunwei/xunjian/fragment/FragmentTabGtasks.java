@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,12 +18,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.yunwei.xunjian.R;
+import com.yunwei.xunjian.activity.MContentActivity;
 import com.yunwei.xunjian.activity.MainActivity;
 import com.yunwei.xunjian.adapter.GtasksAdapter;
 import com.yunwei.xunjian.util.HttpUtil;
 import com.yunwei.xunjian.util.StatusBarUtil;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -52,15 +55,15 @@ public class FragmentTabGtasks extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case UPDATE_LISTVIEW:
+                case UPDATE_LISTVIEW:       //当message中有值时，便利adapter
                     swipeRefresh.setVisibility(View.VISIBLE);
-                 //   textView_null_list.setVisibility(View.GONE);
+                    //   textView_null_list.setVisibility(View.GONE);
                     GtasksAdapter gtasksAdapter = new GtasksAdapter(getActivity(), R.layout.worklist_item, list);
                     listView.setAdapter(gtasksAdapter);
                     break;
                 case NULL_LISTVIEW:
                     swipeRefresh.setVisibility(View.GONE);
-                 //   textView_null_list.setVisibility(View.VISIBLE);
+                    //   textView_null_list.setVisibility(View.VISIBLE);
                     break;
                 default:
                     break;
@@ -79,13 +82,18 @@ public class FragmentTabGtasks extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab_gtasks, container,false);
 
         TextView textView_title = view.findViewById(R.id.title);
         textView_title.setText("待办工单");
 
+        //ListView listView=(ListView) view.findViewById(R.id.gtasksList);
+
+
         listView = (ListView)view.findViewById(R.id.gtasksList);
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -94,6 +102,10 @@ public class FragmentTabGtasks extends Fragment {
                 intent.putExtra("userName", userName);
                 intent.putExtra("areaCode", list.get(position).get("areaCode"));
                 startActivity(intent);*/
+                Intent intent = new Intent(getContext(),MContentActivity.class);
+                intent.putExtra("workListNo",list.get(position).get("workListNo"));
+                startActivity(intent);
+
             }
         });
         swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
@@ -108,8 +120,12 @@ public class FragmentTabGtasks extends Fragment {
        /* textView_null_list = (TextView)view.findViewById(R.id.null_list);
         textView_null_list.setVisibility(View.GONE);
 */
+
+
         return view;
     }
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState){
@@ -169,26 +185,32 @@ public class FragmentTabGtasks extends Fragment {
         HttpUtil.sendOkHttpRequest(URL, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String responseData = response.body().string();
+                try {
 
-                if(!responseData.equals("[]")) {
-                    parseJSONWithJSONObject(responseData);
+                    String responseData = response.body().string();
+                    JSONObject jsonObject = new JSONObject(responseData);
+                    String code = jsonObject.getString("code");
+                    //当返回的数据不为空时，使用json解析数据
+                    if(code.equals("100")) {
+                        parseJSONWithJSONObject(jsonObject);
 
-                    Message message = new Message();
-                    message.what = UPDATE_LISTVIEW;
-                    handler.sendMessage(message);
-                }else{
-                    Message message = new Message();
-                    message.what = NULL_LISTVIEW;
-                    handler.sendMessage(message);
-                }
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefresh.setRefreshing(false);
+                        Message message = new Message();
+                        message.what = UPDATE_LISTVIEW;     //把message的what赋值，
+                        handler.sendMessage(message);
+                    }else{
+                        Message message = new Message();
+                        message.what = NULL_LISTVIEW;
+                        handler.sendMessage(message);
                     }
-                });
-
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            swipeRefresh.setRefreshing(false);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -205,18 +227,24 @@ public class FragmentTabGtasks extends Fragment {
 
     }
 
-    private void parseJSONWithJSONObject(String jsonData) {
+    //给list中添加数据
+    private void parseJSONWithJSONObject(JSONObject jsonObject) {
         list.clear();
 
         try {
             String workListNo, gtasks, lineName;
-            JSONArray jsonArray = new JSONArray(jsonData);
-            Log.d("workList", "Length of jason array is : " + jsonArray.length());
+
+            // Log.d("workList", "Length of jason array is : " + jsonOb.length());
+
+            JSONObject jsonOb=  jsonObject.getJSONObject("extend");
+            JSONArray jsonArray = jsonOb.getJSONArray("workList");
+
             for (int i=0; i<jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                workListNo  = jsonObject.getString("workListNo");
-                gtasks = jsonObject.getString("gtasks");
-                lineName = jsonObject.getString("lineName");
+                //JSONObject jsonObject = jsonArray.getJSONObject(i);
+                JSONObject jsonObjects=jsonArray.getJSONObject(i);
+                workListNo  = jsonObjects.getString("work_LIST_NUM");    //工单编号
+                gtasks = jsonObjects.getString("work_ORDER_NAME");       //任务名称
+                lineName = jsonObjects.getString("line");          //线路名称
 
                 Map<String, String> map = new HashMap<>();
                 map.put("workListNo", workListNo);
@@ -225,6 +253,9 @@ public class FragmentTabGtasks extends Fragment {
 
                 list.add(map);
             }
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
