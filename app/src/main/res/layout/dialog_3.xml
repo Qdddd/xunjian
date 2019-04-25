@@ -35,7 +35,7 @@
             android:id="@+id/old_psd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="原密码："
+            android:text="原  密  码："
             android:textColor="@color/black"
             android:textSize="20sp"
             android:layout_centerVertical="true"/>
@@ -46,7 +46,8 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:gravity="center"
-            android:layout_toEndOf="@+id/old_psd"/>
+            android:layout_toEndOf="@+id/old_psd"
+            android:inputType="numberPassword"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -60,7 +61,7 @@
             android:id="@+id/new_psd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="新密码："
+            android:text="新  密  码："
             android:textColor="@color/black"
             android:textSize="20sp"
             android:layout_centerVertical="true"
@@ -72,7 +73,8 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:gravity="center"
-            android:layout_toEndOf="@+id/new_psd"/>
+            android:layout_toEndOf="@+id/new_psd"
+            android:inputType="numberPassword"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -86,7 +88,7 @@
             android:id="@+id/new_psd1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="新密码："
+            android:text="再次确认："
             android:textColor="@color/black"
             android:textSize="20sp"
             android:layout_centerVertical="true"/>
@@ -97,7 +99,8 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:gravity="center"
-            android:layout_toEndOf="@+id/new_psd1"/>
+            android:layout_toEndOf="@+id/new_psd1"
+            android:inputType="numberPassword"/>
     </RelativeLayout>
 
     <LinearLayout

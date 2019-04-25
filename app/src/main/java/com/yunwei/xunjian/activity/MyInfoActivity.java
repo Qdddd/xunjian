@@ -2,6 +2,7 @@ package com.yunwei.xunjian.activity;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.DigitsKeyListener;
 import android.util.Log;
@@ -201,8 +202,8 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     private void saveData(String type, String value){
         if(type.equals("身份证号")){
             modifyInfo(userName, value, textView_telephone.getText().toString());
-        }else{
-            modifyInfo(userName, textView_idc.getText().toString(), value);
+        }else if(type.equals("手机号码")){
+            modifyInfoPhone(userName, value);
         }
     }
 
@@ -270,7 +271,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void saveDataWithPassword(final String oldPsd, final String newPsd){
-        String URL = MODIFY_PASSWORD + "?operator=" + userName + "&oldPassword=" + oldPsd + "&newPassword=" + newPsd;
+        String URL = MODIFY_PASSWORD + "?oldPw=" +oldPsd  + "&newPw=" + newPsd + "&organizCode=" + userName;
 
         HttpUtil.sendOkHttpRequest(URL, new Callback() {
             @Override
@@ -286,20 +287,27 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                final String responseData = response.body().string();
+                String responseData = response.body().string();
                 Log.d("response", "onResponse: " + response);
                 Log.d("responseData", "onResponse: " + responseData);
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (responseData.equals("0")) {
-                            Toast.makeText(MyInfoActivity.this, "密码修改失败！", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(MyInfoActivity.this, "密码修改成功！", Toast.LENGTH_SHORT).show();
+                try {
+                    JSONObject jsonObject=new JSONObject(responseData);
+                    final String a=jsonObject.get("msg").toString();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (a.equals("处理成功")) {
+                                Toast.makeText(MyInfoActivity.this, "密码修改成功,请重新登录！", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(MyInfoActivity.this,LoginActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(MyInfoActivity.this, "密码修改失败！", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -335,6 +343,47 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                         }
                     }
                 });
+            }
+        });
+    }
+
+    private void modifyInfoPhone(String userName,  final String telephone){
+        String URL = MODIFY_IDC_AND_PHONE + "?phone=" +telephone + "&organizCode=" + userName;
+        HttpUtil.sendOkHttpRequest(URL, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MyInfoActivity.this, "修改失败！", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                 String responseData = response.body().string();
+                try {
+                    JSONObject jsonObject=new JSONObject(responseData);
+                    final String a=jsonObject.get("msg").toString();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(a.equals("处理成功")){
+                                textView_telephone.setText(telephone);
+
+                                Toast.makeText(MyInfoActivity.this, "修改成功,请重新登录！", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(MyInfoActivity.this,LoginActivity.class);
+                                startActivity(intent);
+                            }else{
+                                Toast.makeText(MyInfoActivity.this, "修改失败！", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

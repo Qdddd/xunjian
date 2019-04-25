@@ -49,7 +49,7 @@ public class Constants {
     public static final String MY_INFO = BASIC_URL + "/user/getUserInfo";
 
     /*修改身份证号和电话号码*/
-    public static final String MODIFY_IDC_AND_PHONE = BASIC_URL + "/realUser/changeIdcNoAndPhone";
+    public static final String MODIFY_IDC_AND_PHONE = BASIC_URL + "/user/updatePhoneByOrganizCode";
 
     /*查看问题反馈*/
     public static final String GET_FEEDBACK = BASIC_URL + "/feedback/getFeedback";
@@ -61,5 +61,5 @@ public class Constants {
     public static final String ADD_FEEDBACK_WITH_PICTURE = BASIC_URL + "/feedback/addFeedbackPic";
 
     /*修改密码*/
-    public static final String MODIFY_PASSWORD = BASIC_URL + "/changePassword";
+    public static final String MODIFY_PASSWORD = BASIC_URL + "/user/updatePwByOrganizCode";
 }
