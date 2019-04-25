@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ganta">
+        <item>孟店乡1杆塔</item>
+        <item>孟店乡2杆塔</item>
+        <item>孟店乡3杆塔</item>
+        <item>孟店乡4杆塔</item>
+        <item>孟店乡5杆塔</item>
+
+    </string-array>
+    
+    <string-array name="judge">
+        <item>是</item>
+        <item>否</item>
+    </string-array>
+    
+</resources>
