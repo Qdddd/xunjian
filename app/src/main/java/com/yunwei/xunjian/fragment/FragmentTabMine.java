@@ -115,7 +115,7 @@ public class FragmentTabMine extends Fragment implements View.OnClickListener {
     }
 
     private void initView(){
-        String URL = MY_INFO + "?userName=" + userName;
+        String URL = MY_INFO + "?organizCode=" + userName;
         HttpUtil.sendOkHttpRequest(URL, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -135,8 +135,12 @@ public class FragmentTabMine extends Fragment implements View.OnClickListener {
 
                 try {
                     JSONObject jsonObject = new JSONObject(responseData);
-                    nickName = jsonObject.getString("nickname");
-                    userUnit = jsonObject.getString("userunit");
+                    String a=jsonObject.get("extend").toString();
+                    jsonObject=new JSONObject(a);
+                    a=jsonObject.get("userInfo").toString();
+                    jsonObject=new JSONObject(a);
+                    nickName = jsonObject.getString("name");
+                    userUnit = jsonObject.getString("organiz");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -1,18 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@android:color/white"/>
-    <item
-        android:drawable="@mipmap/person1_20"
-        android:gravity="top"/>
-    <item
-        android:drawable="@mipmap/person_09"
-        android:gravity="center"/>
-    <item
-        android:bottom="50dp"
-        android:drawable="@mipmap/launch_pa_17"
-        android:gravity="bottom|center_horizontal"/>
-    <item
-        android:bottom="20dp"
-        android:drawable="@mipmap/launch_pa_23"
-        android:gravity="bottom|center_horizontal"/>
+    <item android:drawable="@mipmap/startup_pa_1"/>
 </layer-list>
