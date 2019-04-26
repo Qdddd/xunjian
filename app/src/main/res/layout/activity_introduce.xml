@@ -23,6 +23,7 @@
             android:textSize="18sp"
             android:text="@string/introduce"
             android:paddingStart="8dp"
-            android:paddingEnd="8dp"/>
+            android:paddingEnd="8dp"
+            android:lineSpacingExtra="5dp"/>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>
