@@ -54,7 +54,6 @@ public class ServiceCenterActivity extends BaseActivity {
     private ImageView imageView_back, imageView_photo, imageView_camera;
     private EditText editText_feedBack;
     private Button btn_submit;
-
     private String userName, nickName;
 
     private File outputImage;

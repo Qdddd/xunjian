@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".fragment.FragmentTabBook">
-
-    <RelativeLayout
+    <include layout="@layout/actionbar" android:id="@+id/mctitle"></include>
+  <!--  <RelativeLayout
         android:id="@+id/mctitle"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -29,7 +29,7 @@
             android:layout_centerInParent="true"
             android:textColor="@color/white"
             android:text="通讯录"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:padding="8dp"
             />
 
@@ -44,7 +44,7 @@
             android:paddingStart="20dp"
             android:textColor="@color/white"
             android:textSize="16sp"/>
-    </RelativeLayout>
+    </RelativeLayout>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

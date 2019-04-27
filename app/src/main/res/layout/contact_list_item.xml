@@ -12,7 +12,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:drawableStart="@mipmap/group_close"
-        android:drawableEnd="@mipmap/right_arraw"
+        android:drawableEnd="@mipmap/right"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:gravity="center_vertical"

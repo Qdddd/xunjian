@@ -13,20 +13,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.yunwei.xunjian.R;
 import com.yunwei.xunjian.activity.DepartmentActivity;
 import com.yunwei.xunjian.adapter.AAComAdapter;
 import com.yunwei.xunjian.adapter.AAViewHolder;
 import com.yunwei.xunjian.bean.ContactItem;
+import com.yunwei.xunjian.util.HttpUtil;
 import com.yunwei.xunjian.util.StatusBarUtil;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Response;
+
+import static com.yunwei.xunjian.util.Constants.GET_Orgnizetion;
 import static com.yunwei.xunjian.util.Constants.NULL_LISTVIEW;
 import static com.yunwei.xunjian.util.Constants.UPDATE_LISTVIEW;
 
@@ -37,34 +46,30 @@ public class FragmentTabBook extends Fragment {
     private TextView textView_null_list;
     private List<ContactItem> list = new ArrayList<>();
     private FragmentTabFinished.OnFragmentInteractionListener mListener;
-  private AAComAdapter bookAdapter;
+    private AAComAdapter bookAdapter;
+    private TextView title;
+    private ImageView imageView_back;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case UPDATE_LISTVIEW:
-                  //  swipeRefresh.setVisibility(View.VISIBLE);
-                    //   textView_null_list.setVisibility(View.GONE);
+                        //  swipeRefresh.setVisibility(View.VISIBLE);
+                     //     textView_null_list.setVisibility(View.GONE);
+                    Log.i("list==","size"+list.size());
                    bookAdapter =new AAComAdapter<ContactItem>(getContext(), R.layout.contact_list_item,list) {
                         @Override
                         public void convert(AAViewHolder holder, ContactItem mt) {
                             TextView name = holder.getTextView(R.id.name);
                             name.setText(mt.getName());
-                            /*ViewGroup.LayoutParams params = name.getLayoutParams();
-                            Log.d("params.width", "convert: " + params.width);
-                            params.width = MATCH_PARENT;
-                            Log.d("MATCH_PARENT", "convert: " + params.width);
-                            name.setLayoutParams(params);
-                        //    name.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
-                            Log.d("ContactItem", "convert: " + "****" + mt + "***" + mt.getName() + "---" + mt.getORGANIZ_CODE());*/
                         }
 
                     };
                     listView.setAdapter(bookAdapter);
                     break;
                 case NULL_LISTVIEW:
-                    swipeRefresh.setVisibility(View.GONE);
-                    //   textView_null_list.setVisibility(View.VISIBLE);
+                   // swipeRefresh.setVisibility(View.GONE);
+                      textView_null_list.setVisibility(View.VISIBLE);
                     break;
                 default:
                     break;
@@ -80,6 +85,8 @@ public class FragmentTabBook extends Fragment {
         //设置状态栏背景色和字体颜色
         StatusBarUtil.setStatusBarMode(getActivity(), false, R.color.lan);
 
+
+
     }
 
     @Nullable
@@ -87,20 +94,22 @@ public class FragmentTabBook extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_book, container,false);
         listView = (ListView)view.findViewById(R.id.listbook);
+        title=view.findViewById(R.id.title);
+        title.setText("通讯录");
         initView();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(),list.get(position).getName(),Toast.LENGTH_LONG).show();
+               // Toast.makeText(getActivity(),list.get(position).getORGANIZ_CODE(),Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), DepartmentActivity.class);
-                intent.putExtra("Organiz_code", list.get(position).getOrganiz_code());
+                intent.putExtra("ORGANIZ_CODE", list.get(position).getORGANIZ_CODE());
                 //intent.putExtra("userName", userName);
                 //intent.putExtra("areaCode", list.get(position).get("areaCode"));
                 startActivity(intent);
             }
         });
 
-       /* textView_null_list = (TextView)view.findViewById(R.id.null_list);
+       /*textView_null_list = (TextView)view.findViewById(R.id.null_list);
         textView_null_list.setVisibility(View.GONE);
 */
 
@@ -163,16 +172,14 @@ public class FragmentTabBook extends Fragment {
     //初始化视图
     private void initView() {
 
-   /*     String URL = GTASKS + "?name=" + MainActivity.userName;
+       String URL = GET_Orgnizetion;
         HttpUtil.sendOkHttpRequest(URL, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData = response.body().string();
-
-                if(!responseData.equals("[]")) {  */
-                 parseJSONWithJSONObject("gongsi");
-
-              /*      Message message = new Message();
+                if(!responseData.equals("[]")) {
+                 parseJSONWithJSONObject(responseData);
+                  Message message = new Message();
                     message.what = UPDATE_LISTVIEW;
                     handler.sendMessage(message);
                 }else{
@@ -180,63 +187,54 @@ public class FragmentTabBook extends Fragment {
                     message.what = NULL_LISTVIEW;
                     handler.sendMessage(message);
                 }
-                getActivity().runOnUiThread(new Runnable() {
+             /*   getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        swipeRefresh.setRefreshing(false);
+                    //    swipeRefresh.setRefreshing(false);
                     }
-                });
+                });*/
 
             }
 
-            @Override
+           @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                getActivity().runOnUiThread(new Runnable() {
+             /*   getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        swipeRefresh.setRefreshing(false);
+                      //  swipeRefresh.setRefreshing(false);
                     }
-                });
+                });*/
             }
         });
-*/
-        Message message = new Message();
+     /*   Message message = new Message();
         message.what = UPDATE_LISTVIEW;
-        handler.sendMessage(message);
+        handler.sendMessage(message);*/
     }
 
     private void parseJSONWithJSONObject(String jsonData) {
         list.clear();
-
+        Log.d("count", "Length of list count is : " + list.size());
         try {
-      /*      String workListNo, gtasks, lineName;
-            JSONArray jsonArray = new JSONArray(jsonData);
-            Log.d("workList", "Length of jason array is : " + jsonArray.length());
+            JSONObject jsonOb= new JSONObject(jsonData);
+            String a=  jsonOb.get("extend").toString();
+            if (!a.equals("{}")) {
+                jsonOb = new JSONObject(a);
+                a = jsonOb.get("organizInfo").toString();
+            }
+            JSONArray jsonArray = new JSONArray(a);
+            Log.d("organizInfo", "Length of jason array is : " + jsonArray.length());
             for (int i=0; i<jsonArray.length(); i++) {
+                String ORGANIZ_CODE, name;
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                workListNo  = jsonObject.getString("workListNo");
-                gtasks = jsonObject.getString("gtasks");
-                lineName = jsonObject.getString("lineName");
-
-                Map<String, String> map = new HashMap<>();
-                map.put("workListNo", workListNo);
-                map.put("gtasks", gtasks);
-                map.put("lineName", lineName);
-
-                list.add();
-            }*/
-          ContactItem con=new ContactItem();
-                 con.setName("国网河南省信阳市供电公司");
-                 con.setORGANIZ_CODE("1000");
-                 list.add(con);
-          ContactItem con1=new ContactItem();
-                con1.setName("国网河南省周口市供电公司");
-                con1.setORGANIZ_CODE("1001");
-                list.add(con1);
-
-
-
+                ORGANIZ_CODE  = jsonObject.getString("ORGANIZ_CODE");
+                name = jsonObject.getString("ORGANIZ_POST_NAME");
+                ContactItem con=new ContactItem();
+                con.setName(name);
+                con.setORGANIZ_CODE(ORGANIZ_CODE);
+                list.add(con);
+            }
+            Log.i("list112==","size"+list.size());
         } catch (Exception e) {
             e.printStackTrace();
         }

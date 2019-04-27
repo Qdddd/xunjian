@@ -62,4 +62,10 @@ public class Constants {
 
     /*修改密码*/
     public static final String MODIFY_PASSWORD = BASIC_URL + "/user/updatePwByOrganizCode";
+
+    /* 查看公司*/
+    public static final String GET_Orgnizetion =BASIC_URL + "/organiz/getTopOrganizInfo";
+    /* 查看部门或人员*/
+    public static final String GET_DepartOrContact =BASIC_URL + "/organiz/getOrganizInfo";
+
 }
