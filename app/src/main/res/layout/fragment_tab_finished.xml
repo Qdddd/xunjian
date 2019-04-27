@@ -9,6 +9,29 @@
     <include layout="@layout/actionbar"
         android:id="@+id/header"/>
 
+    <LinearLayout
+        android:id="@+id/null_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/nodata" />
+
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="抱歉,暂时没有相关内容哦"
+            android:textColor="@color/text_nodata"
+            android:textSize="12sp" />
+    </LinearLayout>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"

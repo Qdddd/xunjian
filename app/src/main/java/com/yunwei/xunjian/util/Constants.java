@@ -58,7 +58,7 @@ public class Constants {
     public static final String ADD_FEEDBACK = BASIC_URL + "/feedback/addFeedback";
 
     /*添加问题反馈和图片*/
-    public static final String ADD_FEEDBACK_WITH_PICTURE = BASIC_URL + "/feedback/addFeedbackPic";
+    public static final String ADD_FEEDBACK_WITH_PICTURE = BASIC_URL + "/user/addFeedbackInfo";
 
     /*修改密码*/
     public static final String MODIFY_PASSWORD = BASIC_URL + "/user/updatePwByOrganizCode";

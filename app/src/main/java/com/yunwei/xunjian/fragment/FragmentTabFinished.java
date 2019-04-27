@@ -47,7 +47,7 @@ public class FragmentTabFinished extends Fragment {
     private TextView textView_title;
     private SwipeRefreshLayout swipeRefresh;
     private ListView listView;
-    private TextView textView_null_list;
+    private View null_data;
 
     private List<Map<String, String>> list = new ArrayList<>();
 
@@ -66,6 +66,7 @@ public class FragmentTabFinished extends Fragment {
                 case NULL_LISTVIEW:
                     swipeRefresh.setVisibility(View.GONE);
                  //   textView_null_list.setVisibility(View.VISIBLE);
+                    null_data.setVisibility(View.VISIBLE);
                     break;
                 default:
                     break;
@@ -89,6 +90,7 @@ public class FragmentTabFinished extends Fragment {
         TextView textView_title = view.findViewById(R.id.title);
         textView_title.setText("已办工单");
         listView = (ListView)view.findViewById(R.id.finishedList);
+        null_data = view.findViewById(R.id.null_data);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -184,8 +186,8 @@ public class FragmentTabFinished extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData = response.body().string();
                 Log.i("###:",responseData+"##############");
-                if(!responseData.equals("[]")) {
-                    parseJSONWithJSONObject(responseData);
+                parseJSONWithJSONObject(responseData);
+                if (list.size() > 0) {
                     Message message = new Message();
                     message.what = UPDATE_LISTVIEW;
                     handler.sendMessage(message);

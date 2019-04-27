@@ -60,10 +60,12 @@ public class HttpUtil {
 
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
-        Log.i("huang","files[0].getName()=="+files[0].getName());
-        //第一个参数要与Servlet中的一致
-        builder.addFormDataPart("file",files[0].getName(), RequestBody.create(MediaType.parse("application/octet-stream"),files[0]));
 
+        if (files[0] != null) {
+            //第一个参数要与Servlet中的一致
+            builder.addFormDataPart("imgFile", files[0].getName(), RequestBody.create(MediaType.parse("application/octet-stream"), files[0]));
+            Log.i("huang", "files[0].getName()==" + files[0].getName());
+        }
         if (map != null) {
             for (String key : map.keySet()) {
                 builder.addFormDataPart(key, map.get(key));

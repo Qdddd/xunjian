@@ -30,6 +30,9 @@ import com.yunwei.xunjian.util.StatusBarUtil;
 import com.yunwei.xunjian.util.ToastUtil;
 import com.yunwei.xunjian.util.Tools;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -54,6 +57,7 @@ public class ServiceCenterActivity extends BaseActivity {
     private ImageView imageView_back, imageView_photo, imageView_camera;
     private EditText editText_feedBack;
     private Button btn_submit;
+
     private String userName, nickName;
 
     private File outputImage;
@@ -144,21 +148,17 @@ public class ServiceCenterActivity extends BaseActivity {
                     return;
                 }
 
-                Log.d("outputImage", "onClick: " + outputImage.getAbsolutePath().toString());
                 File file = null;
                 if(isCropedFlag == 2){
                     Log.d("outputUri", "onClick: " + FileUtil.getAbsoluteImagePath(ServiceCenterActivity.this, outputUri));
                     file = new File(FileUtil.getAbsoluteImagePath(ServiceCenterActivity.this, outputUri));
+                    Log.d("outputImage", "onClick: " + outputImage.getAbsolutePath());
                 }else if(isCropedFlag == 1){
                     Log.d("outputUri", "onClick: " + FileUtil.getAbsoluteImagePath(ServiceCenterActivity.this, imageUri));
                     file = new File(FileUtil.getAbsoluteImagePath(ServiceCenterActivity.this, imageUri));
+                    Log.d("outputImage", "onClick: " + outputImage.getAbsolutePath());
                 }
-
-                if(file == null ){
-                    submitFeedback(editText_feedBack.getText().toString());
-                }else {
                     submitFeedBackWithPicture(editText_feedBack.getText().toString(), file);
-                }
             }
         });
 
@@ -168,44 +168,44 @@ public class ServiceCenterActivity extends BaseActivity {
         layout_progress.setVisibility(View.GONE);
     }
 
-    private void submitFeedback(String feedbackContent){
-        String URL = ADD_FEEDBACK + "?feedbackPerson=" + userName + "&feedbackContent=" + feedbackContent;
-        HttpUtil.sendOkHttpRequest(URL, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(ServiceCenterActivity.this, "问题反馈失败！网络或服务器故障！", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+//    private void submitFeedback(String feedbackContent){
+//        String URL = ADD_FEEDBACK + "?feedbackPerson=" + userName + "&feedbackContent=" + feedbackContent;
+//        HttpUtil.sendOkHttpRequest(URL, new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast.makeText(ServiceCenterActivity.this, "问题反馈失败！网络或服务器故障！", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                final String responseData = response.body().string();
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (responseData.equals("1")) {
+//                            editText_feedBack.setText("");
+//                            Toast.makeText(ServiceCenterActivity.this, "提交成功！", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            Toast.makeText(ServiceCenterActivity.this, "提交失败！请重新提交问题！", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//
+//    }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                final String responseData = response.body().string();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (responseData.equals("1")) {
-                            editText_feedBack.setText("");
-                            Toast.makeText(ServiceCenterActivity.this, "提交成功！", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(ServiceCenterActivity.this, "提交失败！请重新提交问题！", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        });
-
-    }
-
-    private void submitFeedBackWithPicture(String feedbackContent, File file) {
+    private void submitFeedBackWithPicture(String feedbackContent, File imgFile) {
         Map<String, String> myMap = new HashMap<>();
         myMap.put("feedbackPerson", userName);
         myMap.put("feedbackContent", feedbackContent);
 
-        File[] files = {file, null};
+        File[] files = {imgFile, null};
 
         layout_progress.setVisibility(View.VISIBLE);
 
@@ -232,13 +232,20 @@ public class ServiceCenterActivity extends BaseActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                final String result = response.body().string();
+                String result = response.body().string();
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    result = jsonObject.get("code").toString();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 Log.d("AcceptActivity", "result===" + result);
+                final String finalResult = result;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         layout_progress.setVisibility(View.GONE);
-                        if (!result.equals("0")) {
+                        if (finalResult.equals("100")) {
                             editText_feedBack.setText("");
                             imageView_photo.setImageResource(R.mipmap.load);
                             Toast.makeText( ServiceCenterActivity.this,  "提交成功！", Toast.LENGTH_SHORT).show();
