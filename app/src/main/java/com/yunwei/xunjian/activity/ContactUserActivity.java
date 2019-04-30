@@ -53,6 +53,7 @@ public class ContactUserActivity extends ItentButtonUtil {
         //设置状态栏背景色和字体颜色
         StatusBarUtil.setStatusBarMode(this, false, R.color.lan);
         imageView_back=findViewById(R.id.back);
+        imageView_back.setImageResource(R.mipmap.back);
         title=findViewById(R.id.title);
         title.setText("通讯录");
         back(imageView_back);

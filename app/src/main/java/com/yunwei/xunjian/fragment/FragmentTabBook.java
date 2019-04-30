@@ -96,7 +96,7 @@ public class FragmentTabBook extends Fragment {
         listView = (ListView)view.findViewById(R.id.listbook);
         title=view.findViewById(R.id.title);
         title.setText("通讯录");
-        initView();
+        //initView();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -214,6 +214,13 @@ public class FragmentTabBook extends Fragment {
 
     private void parseJSONWithJSONObject(String jsonData) {
         list.clear();
+        /*getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtil.showToast(getActivity(), "000", Toast.LENGTH_LONG);
+            }
+        });*/
+
         Log.d("count", "Length of list count is : " + list.size());
         try {
             JSONObject jsonOb= new JSONObject(jsonData);
