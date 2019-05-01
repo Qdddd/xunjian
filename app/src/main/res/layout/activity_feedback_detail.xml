@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".activity.FinishedWorkDetailActivity">
+
+    <include layout="@layout/actionbar"/>
+    <View
+        android:id="@+id/top_gray"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="@color/darkGray"/>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp">
+        <TableRow
+            android:padding="10dp"
+            android:background="@drawable/dsah_line_bottom">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="反馈时间："
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/feedback_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20sp"/>
+
+        </TableRow>
+        <TableRow
+            android:padding="10dp"
+            android:background="@drawable/dsah_line_bottom">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="反馈内容："
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/feedback_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:text=""
+                android:maxLines="6"/>
+        </TableRow>
+        <TableRow
+            android:id="@+id/feedback_img_row"
+            android:padding="10dp"
+            android:background="@drawable/dsah_line_bottom"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="反馈图片："
+                android:textSize="20sp"/>
+            <ImageView
+                android:id="@+id/feedback_img"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"/>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/null_data_row"
+            android:padding="10dp"
+            android:background="@drawable/dsah_line_bottom">
+            <TextView
+                android:layout_weight="1"/>
+            <TextView
+                android:hint="暂无回复，请耐心等待！工作人员会尽快回复！"
+                android:textSize="18sp"
+                android:layout_weight="1"/>
+        </TableRow>
+        <TableRow
+            android:id="@+id/feedback_reply_time_row"
+            android:padding="10dp"
+            android:background="@drawable/dsah_line_bottom"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="回复时间："
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/feedback_reply_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:text=""/>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/feedback_reply_content_row"
+            android:padding="10dp"
+            android:background="@drawable/dsah_line_bottom"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="回复内容："
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/feedback_reply_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:text=""
+                android:maxLines="6"/>
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

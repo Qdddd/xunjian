@@ -38,12 +38,13 @@ public class Constants {
     /*登陆*/
     public static final String LOGIN_URL = BASIC_URL + "/user/checkLogin";
 
-
+    //获取服务器图片的BASIC_URL
+    public static final String BASIC_IMAGE_URL ="http://192.168.1.234:8080/image/";
     /*待办工单*/
     /*获取待办工单*/
     public static final String GTASKS = BASIC_URL + "/workList/getAllBacklogWorkListByHandler";
 
-    /*获取待办工单*/
+    /*获已办工单*/
     public static final String FINISHED_LIST =BASIC_URL + "/workList/getAllWorkListByHandler";
     /*我的*/
     public static final String MY_INFO = BASIC_URL + "/user/getUserInfo";
@@ -52,7 +53,7 @@ public class Constants {
     public static final String MODIFY_IDC_AND_PHONE = BASIC_URL + "/user/updatePhoneByOrganizCode";
 
     /*查看问题反馈*/
-    public static final String GET_FEEDBACK = BASIC_URL + "/feedback/getFeedback";
+    public static final String GET_FEEDBACK = BASIC_URL + "/user/getAllFeedbackInfoByCode";
 
     /*添加问题反馈*/
     public static final String ADD_FEEDBACK = BASIC_URL + "/feedback/addFeedback";

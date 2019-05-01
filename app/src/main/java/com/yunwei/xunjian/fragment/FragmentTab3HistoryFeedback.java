@@ -18,9 +18,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.yunwei.xunjian.R;
+import com.yunwei.xunjian.activity.FeedbackDetailActivity;
 import com.yunwei.xunjian.activity.FinishedWorkDetailActivity;
 import com.yunwei.xunjian.activity.MainActivity;
+import com.yunwei.xunjian.adapter.FeedbackAdapter;
 import com.yunwei.xunjian.adapter.FinishedAdapter;
+import com.yunwei.xunjian.bean.HistoryFeedback;
 import com.yunwei.xunjian.util.HttpUtil;
 import com.yunwei.xunjian.util.StatusBarUtil;
 import com.yunwei.xunjian.util.Tools;
@@ -37,19 +40,26 @@ import java.util.Map;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.yunwei.xunjian.activity.MainActivity.userName;
 import static com.yunwei.xunjian.util.Constants.FINISHED_LIST;
+import static com.yunwei.xunjian.util.Constants.GET_FEEDBACK;
 import static com.yunwei.xunjian.util.Constants.NULL_LISTVIEW;
 import static com.yunwei.xunjian.util.Constants.UPDATE_LISTVIEW;
+/**
+* FileName: FragmentTab3HistoryFeedback.java
+* Description:历史反馈选项卡3 ：未回复选项卡
+* @author  Monica J
+* @Date    2019/4/30 0030  15:43
+* @version 1.00
+*/
 
-public class FragmentTabFinished extends Fragment {
+public class FragmentTab3HistoryFeedback extends Fragment {
 
-    private ImageView imageView_back;
-    private TextView textView_title;
     private SwipeRefreshLayout swipeRefresh;
     private ListView listView;
     private View null_data;
 
-    private List<Map<String, String>> list = new ArrayList<>();
+    private List<HistoryFeedback> list = new ArrayList<>();
 
     private FragmentTabFinished.OnFragmentInteractionListener mListener;
 
@@ -60,13 +70,11 @@ public class FragmentTabFinished extends Fragment {
                 case UPDATE_LISTVIEW:
                     swipeRefresh.setVisibility(View.VISIBLE);
                     null_data.setVisibility(View.GONE);
-                   //textView_null_list.setVisibility(View.GONE);
-                    FinishedAdapter finishedAdapter = new FinishedAdapter(getActivity(), R.layout.finished_item, list);
-                    listView.setAdapter(finishedAdapter);
+                    FeedbackAdapter feedbackAdapter = new FeedbackAdapter(getActivity(), R.layout.feedback_item, list);
+                    listView.setAdapter(feedbackAdapter);
                     break;
                 case NULL_LISTVIEW:
                     swipeRefresh.setVisibility(View.GONE);
-                 //   textView_null_list.setVisibility(View.VISIBLE);
                     null_data.setVisibility(View.VISIBLE);
                     break;
                 default:
@@ -87,26 +95,16 @@ public class FragmentTabFinished extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tab_finished, container,false);
-        TextView textView_title = view.findViewById(R.id.title);
-        textView_title.setText("已办工单");
-        listView = (ListView)view.findViewById(R.id.finishedList);
+        View view = inflater.inflate(R.layout.fragment_tab_feedback_history, container,false);
+
+        listView = (ListView)view.findViewById(R.id.history_feedback_list);
         null_data = view.findViewById(R.id.null_data);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), FinishedWorkDetailActivity.class);
-
+                Intent intent = new Intent(getActivity(), FeedbackDetailActivity.class);
                 Bundle bundle=new Bundle();
-                bundle.putCharSequence("userName",MainActivity.userName);
-                bundle.putCharSequence("workNum", list.get(position).get("workNum"));
-                bundle.putCharSequence("workName", list.get(position).get("workName"));
-                bundle.putCharSequence("line", list.get(position).get("line"));
-                bundle.putCharSequence("sendOrderPerson", list.get(position).get("sendOrderPerson"));
-                bundle.putCharSequence("sendOrderTime", list.get(position).get("sendOrderTime"));
-                bundle.putCharSequence("handler", list.get(position).get("handler"));
-                bundle.putCharSequence("accomplishTime", list.get(position).get("accomplishTime"));
-
+                bundle.putSerializable("historyFeedback",list.get(position));
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -180,8 +178,7 @@ public class FragmentTabFinished extends Fragment {
     }
 
     private void initView() {
-
-        String URL = FINISHED_LIST + "?name=" + MainActivity.userName;
+        String URL = GET_FEEDBACK + "?feedbackPerson=" + userName+"&feedbackState=1";//0：全部,1：未回复的,2：回复了的
         HttpUtil.sendOkHttpRequest(URL, new okhttp3.Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -224,36 +221,34 @@ public class FragmentTabFinished extends Fragment {
     private void parseJSONWithJSONObject(String jsonData) {
         list.clear();
         try {
-            String workNum, workName, line,sendOrderPerson,sendOrderTime,handler,accomplishTime;
             JSONObject jsonOb= new JSONObject(jsonData);
             Log.i("###:",jsonOb.get("extend").toString()+"##############");
             Log.d("workList", "Length of jason array is : " + jsonOb.length());
             String a=  jsonOb.get("extend").toString();
-            if (!a.equals("{}")) {
+            if (jsonOb.get("msg").equals("处理成功")) {
                 jsonOb = new JSONObject(a);
-                a = jsonOb.get("workList").toString();
+                a = jsonOb.get("feedbackInfo").toString();
                 JSONArray jsonArray = new JSONArray(a);
                 for (int i=0; i<jsonArray.length(); i++) {
+                    HistoryFeedback historyFeedback=new HistoryFeedback();
                     JSONObject jsonObject=new JSONObject(jsonArray.get(i).toString());
-                    workNum=jsonObject.getString("work_LIST_NUM");
-                    workName = jsonObject.getString("work_ORDER_NAME");
-                    line = jsonObject.getString("line");
-                    sendOrderPerson=jsonObject.getString("work_List_SEND_PERSION");
-                    sendOrderTime=Tools.stampToDate(Long.valueOf(jsonObject.getString("send_ORDER_TIME"))/1000);
-                    handler=jsonObject.getString("work_List_HANDLER");
-                    accomplishTime=Tools.stampToDate(Long.valueOf(jsonObject.getString("accomplish_TIME"))/1000);
+                    historyFeedback.setFeedbackDateTime(Tools.stampToDate(Long.valueOf(jsonObject.getString("feedback_DATE_TIME"))/1000));
+                    historyFeedback.setFeedbackContent(jsonObject.getString("feedback_CONTENT"));
+                    historyFeedback.setFeedbackPerson(jsonObject.getString("feedback_PERSON"));
+                    if(!jsonObject.getString("feedback_PIC_PATH").equals("null")){
+                        historyFeedback.setFeedbackPicPath(jsonObject.getString("feedback_PIC_PATH"));
+                    }
+                    historyFeedback.setReply(jsonObject.getString("revert"));
+                    if(historyFeedback.getReply().equals("1")) {
+                        historyFeedback.setReplyDateTime(Tools.stampToDate(Long.valueOf(jsonObject.getString("revert_DATE_TIME")) / 1000));
+                        historyFeedback.setReplyPerson(jsonObject.getString("revert_PERSON"));
+                        historyFeedback.setReplyContent(jsonObject.getString("revert_CONTENT"));
+                    }
 
-                    Map<String, String> map = new HashMap<>();
-                    map.put("workNum", workNum);
-                    map.put("workName", workName);
-                    map.put("line", line);
-                    map.put("sendOrderPerson",sendOrderPerson);
-                    map.put("sendOrderTime",sendOrderTime);
-                    map.put("handler",handler);
-                    map.put("accomplishTime",accomplishTime);
-
-                    list.add(map);
+                    list.add(historyFeedback);
                 }
+            }else{
+                Log.i("FTab1HistoryFeedback","msg!=处理成功");
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,45 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.HistoryFeedbackActivity">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+    android:background="@color/white"
+    >
 
     <include layout="@layout/actionbar"
         android:id="@+id/header"/>
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/history_feedback"
+    <RadioGroup
+        android:id="@+id/rg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/header"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_below="@id/header"
         >
 
-        <ListView
-            android:id="@+id/list_feedback"
-            android:layout_width="match_parent"
+        <RadioButton
+            android:id="@+id/feedback_tb1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:background="@drawable/feedback_tab"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:padding="10dp"
+            android:button="@null"
+            android:text="所有反馈"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:textColor="@color/color_select"
+            android:checked="true" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+        <RadioButton
+            android:id="@+id/feedback_tb2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/feedback_tab"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="已回复反馈"
+            android:textColor="@color/color_select"
+            android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/null_feedback"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="还没有问题反馈呦！"
-        android:textSize="30sp"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="italic"
-        android:padding="10dp"
-        android:layout_centerVertical="true"
-        android:visibility="gone"/>
+        <RadioButton
+            android:id="@+id/feedback_tb3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/feedback_tab"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="未回复反馈"
+            android:textColor="@color/color_select"
+            android:textSize="20sp" />
+    </RadioGroup>
 
-    </RelativeLayout>
-</android.support.constraint.ConstraintLayout>
+    <FrameLayout
+        android:id="@+id/fragment_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rg"
+        android:layout_marginBottom="-1dp">
+
+    </FrameLayout>
+
+</RelativeLayout>

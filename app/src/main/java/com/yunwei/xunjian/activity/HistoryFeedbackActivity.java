@@ -1,75 +1,41 @@
 package com.yunwei.xunjian.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.yunwei.xunjian.R;
-import com.yunwei.xunjian.bean.HistoryFeedback;
-import com.yunwei.xunjian.adapter.FeedbackAdapter;
-import com.yunwei.xunjian.util.HttpUtil;
+import com.yunwei.xunjian.fragment.FragmentTab1HistoryFeedback;
+import com.yunwei.xunjian.fragment.FragmentTab2HistoryFeedback;
+import com.yunwei.xunjian.fragment.FragmentTab3HistoryFeedback;
+import com.yunwei.xunjian.fragment.FragmentTabMine;
 import com.yunwei.xunjian.util.StatusBarUtil;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Response;
-
-import static com.yunwei.xunjian.util.Constants.GET_FEEDBACK;
-
+/**
+ * 查看用户历史反馈的界面
+ *
+ */
 public class HistoryFeedbackActivity extends BaseActivity {
-
-    private TextView textView_title, textView_null_feedback;
+    //    public static String nickName;
+    public static String userName;
     private ImageView imageView_back;
-    private SwipeRefreshLayout swipeRefresh;
-    private ListView listView_feedback;
-
-    private FeedbackAdapter feedbackAdapter;
-    private List<HistoryFeedback> list;
-
-    private static final int UPDATE_FEEDBACK = 3;
-    private static final int UPDATE_NULL = 0;
-
-    private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg){
-            switch(msg.what){
-                case UPDATE_FEEDBACK:
-                    textView_null_feedback.setVisibility(View.GONE);
-                    feedbackAdapter = new FeedbackAdapter(HistoryFeedbackActivity.this,R.layout.feedback_item,list);
-                    listView_feedback.setAdapter(feedbackAdapter);
-                    break;
-                case UPDATE_NULL:
-                    swipeRefresh.setVisibility(View.GONE);
-                    textView_null_feedback.setVisibility(View.VISIBLE);
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
+    private RadioGroup radioGroup;
+    private FragmentManager fm;
+    private FragmentTransaction ft;
+    private FragmentTab1HistoryFeedback fragmentTab1HistoryFeedback;
+    private FragmentTab2HistoryFeedback fragmentTab2HistoryFeedback;
+    private FragmentTab3HistoryFeedback fragmentTab3HistoryFeedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_feedback);
-
-        //设置状态栏背景色和字体颜色
-        StatusBarUtil.setStatusBarMode(this, false, R.color.lan);
-
-        textView_title = (TextView)findViewById(R.id.title);
+        TextView textView_title =findViewById(R.id.title);
         textView_title.setText("历史反馈");
         imageView_back = (ImageView)findViewById(R.id.back);
         imageView_back.setImageResource(R.mipmap.back);
@@ -77,91 +43,101 @@ public class HistoryFeedbackActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
-                finish();
             }
         });
+        //设置状态栏背景色和字体颜色
+        StatusBarUtil.setStatusBarMode(this, false, R.color.lan);
+//        Bundle bundle = getIntent().getExtras();
+//        userName = bundle.getString("userName");
 
-        swipeRefresh = (SwipeRefreshLayout)findViewById(R.id.history_feedback);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        fm = getSupportFragmentManager();  //获取Fragment
+        ft = fm.beginTransaction();   //开启一个事务
+
+        radioGroup = (RadioGroup) findViewById(R.id.rg);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onRefresh() {
-                initView();
-            }
-        });
-
-        listView_feedback = (ListView)findViewById(R.id.list_feedback);
-        textView_null_feedback = (TextView)findViewById(R.id.null_feedback);
-
-        initView();
-    }
-
-    private void initView(){
-        String URL = GET_FEEDBACK;
-        HttpUtil.sendOkHttpRequest(URL, new okhttp3.Callback(){
-            @Override
-            public void onFailure(Call call, IOException e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefresh.setRefreshing(false);
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseData = response.body().string();
-
-                if(!responseData.equals("") && !responseData.equals("[]")) {
-                    parseJSONWithJSONObject(responseData);
-                    Message msg = new Message();
-                    msg.what = UPDATE_FEEDBACK;
-                    handler.sendMessage(msg);
-                }else{
-                    Message msg = new Message();
-                    msg.what = UPDATE_NULL;
-                    handler.sendMessage(msg);
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch(checkedId){
+                    case R.id.feedback_tb1:
+                        displayFragment(0);
+                        break;
+                    case R.id.feedback_tb2:
+                        displayFragment(1);
+                        break;
+                    case R.id.feedback_tb3:
+                        displayFragment(2);
+                        break;
+                    default:
+                        break;
                 }
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefresh.setRefreshing(false);
-                    }
-                });
             }
         });
+
+        displayFragment(0);
     }
 
-    private void parseJSONWithJSONObject(String jsonData) {
-        list = new ArrayList<>();
-        Iterator<HistoryFeedback> iterator = list.iterator();
-        while(iterator.hasNext()){
-            iterator.next();
-            iterator.remove();
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+    }
+
+    /**
+     * 解决fragment出现重影问题，重写该方法，注释掉super.onSaveInstanceState(outState);
+     * @param outState
+     */
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        //如果用以下这种做法则不保存状态，再次进来的话会显示默认的tab
+        // super.onSaveInstanceState(outState);
+    }
+
+
+    private void displayFragment(int i){
+        ft = fm.beginTransaction();
+        hideFragment(ft);
+        switch(i){
+            case 0:
+                if(fragmentTab1HistoryFeedback == null){
+                    fragmentTab1HistoryFeedback = new FragmentTab1HistoryFeedback();
+                    ft.add(R.id.fragment_content, fragmentTab1HistoryFeedback, "fragmentTab1");
+                }else{
+                    ft.show(fragmentTab1HistoryFeedback);
+                }
+                break;
+            case 1:
+                if(fragmentTab2HistoryFeedback == null){
+                    fragmentTab2HistoryFeedback = new FragmentTab2HistoryFeedback();
+                    ft.add(R.id.fragment_content,fragmentTab2HistoryFeedback,"fragmentTab2");
+                }else{
+                    ft.show(fragmentTab2HistoryFeedback);
+                }
+                break;
+            case 2:
+                if(fragmentTab3HistoryFeedback == null){
+                    fragmentTab3HistoryFeedback = new FragmentTab3HistoryFeedback();
+                    ft.add(R.id.fragment_content,fragmentTab3HistoryFeedback,"fragmentTab2");
+                }else{
+                    ft.show(fragmentTab3HistoryFeedback);
+                }
+                break;
+            default:
+                break;
         }
+        ft.commitAllowingStateLoss();
+    }
 
-        try {
-            Long timeStamp;
-            String feedbsckPerson;
-            String feedback;
-
-            JSONArray jsonArray = new JSONArray(jsonData);
-            Log.d("MainActivity", "Length of jason array is : " + jsonArray.length());
-            for (int i=0; i<jsonArray.length(); i++) {
-                HistoryFeedback historyFeedback = new HistoryFeedback();
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                feedbsckPerson = jsonObject.getString("feedback_person");
-                timeStamp  = jsonObject.getLong("feedback_date_time");
-                feedback = jsonObject.getString("feedback_content");
-
-                historyFeedback.setFeedbackPerson(feedbsckPerson);
-                historyFeedback.setFeedbackDateTime(timeStamp);
-                historyFeedback.setFeedbackContent(feedback);
-                list.add(historyFeedback);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void hideFragment(FragmentTransaction ft){
+        //如果fragment不为空，就先隐藏起来
+        if(fragmentTab1HistoryFeedback != null){
+            ft.hide(fragmentTab1HistoryFeedback);
+        }
+        if(fragmentTab2HistoryFeedback != null){
+            ft.hide(fragmentTab2HistoryFeedback);
+        }
+        if(fragmentTab3HistoryFeedback != null){
+            ft.hide(fragmentTab3HistoryFeedback);
         }
     }
 }

@@ -42,7 +42,7 @@ public class FeedbackAdapter extends ArrayAdapter<HistoryFeedback> {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        String dateTime = Tools.stampToDate(historyFeedback.getFeedbackDateTime());
+        String dateTime = historyFeedback.getFeedbackDateTime();
         viewHolder.timeStamp.setText(dateTime);
         viewHolder.feedback.setText(historyFeedback.getFeedbackContent());
 
