@@ -114,6 +114,7 @@ public class ImageActivity extends BaseActivity {
                 public void onResponse(Call call, Response response) throws IOException {
                     //得到从网上获取资源，转换成我们想要的类型
                     byte[] imageBytes = response.body().bytes();
+
                     //使用BitmapFactory工厂，把字节数组转化为bitmap
                     Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                     if(bitmap != null) {
